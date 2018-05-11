@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form action="create_alert" method="post">
+
+    <!-- 选择货币名称 -->
+    <div class="form-group">
+        <label for="Input_current">货币种类</label>
+        <select class="form-control" id="Input_current" name="Input_current">
+
+            <!-- 遍历所有货币作为下拉选项来菜单 -->
+            {% for money in money_dict.values() %}
+            <option value="{{money.current}}">{{money.current}}</option>
+            {% endfor %}
+
+        </select>
+    </div>
+
+    <!-- 汇率类型 -->
+    <div class="form-group">
+        <label for="rate_kind">汇率种类</label>
+        <select class="form-control" id="rate_kind" name="rate_kind">
+            <option value="cash">现钞</option>
+            <option value="sign">现汇</option>
+
+        </select>
+    </div>
+
+    <!-- 需要监控的买入价格 -->
+    <div class="form-group">
+        <label for="buy_price">买入价格</label>
+        <input type="text" class="form-control" id="buy_price" name="buy_price" placeholder="通知买入价格"
+               required="required" pattern="\d+\.?\d{0,2}">
+        <small id="buy_price_hint" class="form-text text-muted">格式:10 或者 10.1 或者 0.1 (最高2位小数)</small>
+    </div>
+
+    <!-- 需要监控的卖出价格 -->
+    <div class="form-group">
+        <label for="sell_price">卖出价格</label>
+        <input type="text" class="form-control" id="sell_price" name="sell_price" placeholder="通知卖出价格"
+               required="required" pattern="\d+\.?\d{0,2}">
+    </div>
+
+    <button type="submit" class="btn btn-primary">创建</button>
+
+    <!-- 显示创建完成后的返回信息 -->
+    <p>{{message}}</p>
+    <p>{{current_msg}}</p>
+    <p>{{rate_kind_msg}}</p>
+    <p>¥ {{buy_price_msg}}</p>
+    <p>¥ {{sell_price_msg}}</p>
+
+
+
+
+</form>
+{% endblock %}

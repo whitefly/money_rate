@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<div class="row">
+    <!-- 生成所有监控货币卡片 -->
+    {% for money in alerts_data %}
+
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-body">
+                <form action="alert_manage" method="post">
+
+                    <!-- 更新窗口 用hint来显示原始设置价格 -->
+                    <h3 class="card-title">{{money["current"]}}</h3>
+
+                    <div class="form-group row">
+                        <label for="up_buy_price" class="col-sm-3 col-form-label">买入</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="up_buy_price" name="up_buy_price"
+                                   placeholder="当前:¥{{money['price'][0]}}" required="required" pattern="\d+\.?\d{0,2}">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="up_sell_price" class="col-sm-3 col-form-label">卖出</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="up_sell_price" name="up_sell_price"
+                                   placeholder="当前:¥{{money['price'][1]}}" required="required" pattern="\d+\.?\d{0,2}">
+                        </div>
+                    </div>
+                    <!-- 设置隐藏input来传回货币名称和汇率种类 -->
+                    <input type="hidden" name="up_current" value="{{money['current']}}">
+                    <input type="hidden" name="up_rate_kind" value="{{money['rate_kind']}}">
+
+                    <button type="submit" class="btn btn-primary">更新</button>
+
+
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+</div>
+{% endblock %}

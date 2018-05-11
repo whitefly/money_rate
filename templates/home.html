@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<table class="table table-striped table-dark">
+    <thead>
+    <tr>
+        <th scope="col">类别</th>
+        <th scope="col">现金-买入</th>
+        <th scope="col">现金-卖出</th>
+        <th scope="col">现汇-买入</th>
+        <th scope="col">现汇-卖出</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- 可以直接使用python语法和render_template中传入的变量 -->
+    {% for item in moneys_dict.values() %}
+    <tr>
+        <td>{{item.current}}</td>
+        <td>{{item.cash_in}}</td>
+        <td>{{item.cash_out}}</td>
+        <td>{{item.ex_in}}</td>
+        <td>{{item.ex_out}}</td>
+    </tr>
+    {% endfor %}
+
+    </tbody>
+</table>
+{% endblock %}
