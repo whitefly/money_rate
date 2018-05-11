@@ -6,14 +6,14 @@ from modules.alert import Alert
 
 app = Flask(__name__)
 app.secret_key = "wuhan"
-Database.inti()
 
 
 @app.before_first_request
 def inti_request():
     # 这东西在整个过程中,只会执行一次
+    print("执行一次")
     Database.inti()
-    # 定义session['email']的功能,否则找不到会报错
+    # 定义session['email']的功能,否则找不到会报错. 要是浏览器重启,好像也直接报错
     session['email'] = session.get('email')
     session['name'] = session.get('name')
 
@@ -144,8 +144,8 @@ def new_alert():
                 message = "新的货币监听已经创建成功!"
                 current_msg = "货币:{}".format(Input_current)
                 rate_kind_msg = "汇率类型:{}".format("现钞" if rate_kind == "cash" else "现汇")
-                buy_price_msg = "买入价格:{}".format(buy_price)
-                sell_price_msg = "卖出价格:{}".format(sell_price)
+                buy_price_msg = "买入价格:¥ {}".format(buy_price)
+                sell_price_msg = "卖出价格:¥ {}".format(sell_price)
 
                 return render_template("create_alert.html", money_dict=money_dict, message=message,
                                        current_msg=current_msg,
@@ -186,9 +186,30 @@ def alert_update():
     :return:
     """
     if request.method == "POST":
+        up_current = request.form["up_current"]
+        up_rate_kind = request.form["up_rate_kind"]
         up_buy_price = request.form["up_buy_price"]
         up_sell_price = request.form["up_sell_price"]
-        Alert.update_user_alert()
+        # 未写删除sign类型的判断
+        if up_rate_kind == "cash":
+            Alert.update_user_alert(session['email'], current=up_current, rate_kind=up_rate_kind
+                                    , price=[up_buy_price, up_sell_price])
+            return redirect('/alert_manage')
+
+
+@app.route('/alert_delete', methods=["POST"])
+def alert_delete():
+    """
+    功能:用来处理卡片管理上进行的更新
+    :return:
+    """
+    if request.method == "POST":
+        up_current = request.form["up_current"]
+        up_rate_kind = request.form["up_rate_kind"]
+        if up_rate_kind == "cash":
+            Alert.delete_user_alert(session['email'], current=up_current, rate_kind=up_rate_kind)
+            return redirect('/alert_manage')
+
 
 if __name__ == '__main__':
     app.run(debug=True, port="10111")

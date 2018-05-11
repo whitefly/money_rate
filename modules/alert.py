@@ -36,8 +36,17 @@ class Alert(object):
         """
         功能:修改 货币监控价格
         """
-        return Database.update_one(Alert.collection_name, query={"email": current, "rate_kind": rate_kind},
-                                   data={"$set": {"email": price}})
+        return Database.update_one(Alert.collection_name,
+                                   query={"email": email, "current": current, "rate_kind": rate_kind},
+                                   data={"$set": {"price": price}})
+
+    @staticmethod
+    def delete_user_alert(email, current, rate_kind):
+        """
+        功能:删除 某个货币监控
+        """
+        return Database.delete(Alert.collection_name,
+                                   query={"email": email, "current": current, "rate_kind": rate_kind})
 
     def __get_info(self) -> json:
         # 封装为json格式进行插入

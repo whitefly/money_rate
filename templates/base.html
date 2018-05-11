@@ -14,7 +14,7 @@
 
 
     <!-- Custom styles for this template -->
-    <link href="cover.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
 </head>
 
 <body class="text-center">
@@ -22,45 +22,74 @@
 <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
     <header class="masthead mb-auto">
         <div class="inner">
+
             <!-- 登陆后显示用户名 -->
-            {% if session['email'] %}
-            <h3 class="masthead-brand" ,href="/home">{{session['name']}}</h3>
-            {% endif %}
-
-            {% if not session['email'] %}
-            <h3 class="masthead-brand">Welcome</h3>
-            {% endif %}
-
-            <nav class="nav nav-masthead justify-content-center">
-                <a class="nav-link" href="/home">主页</a>
-                <!-- 未登陆时 -->
-                {% if not session['email'] %}
-                <a class="nav-link" href="/login">登录</a>
-                <a class="nav-link active" href="/register">注册</a>
-                {% endif %}
-
-                <!-- 登陆后 -->
+            <center>
                 {% if session['email'] %}
-                <a class="nav-link" href="/alert_manage">监控管理</a>
-                <a class="nav-link" href="/create_alert">新增监控</a>
-                <a class="nav-link" href="/change_email">修改email</a>
-                <a class="nav-link" href="/logout">注销</a>
+                <h3 class="title" ,href="/home">{{session['name']}}</h3>
                 {% endif %}
-            </nav>
 
+                {% if not session['email'] %}
+                <h3 class="title">Welcome</h3>
+                {% endif %}
+            </center>
+
+            <!-- 下拉式按钮来进行操作集合 -->
+
+            <!-- 账号栏的操作 -->
+            <div class="btn-group">
+                <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                    账号
+                </button>
+                <div class="dropdown-menu">
+
+                    {% if session['email'] %}
+                    <!-- 登录状态 -->
+                    <a class="dropdown-item">{{session['email']}}</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/change_email">更改邮箱</a>
+                    <a class="dropdown-item" href="/logout">退出用户</a>
+
+                    {% else %}
+                    <!-- 未登录状态 -->
+                    <a class="dropdown-item" href="/login">登录</a>
+                    <a class="dropdown-item" href="/register">注册</a>
+
+                    {% endif %}
+                </div>
+            </div>
+
+            {% if session['email'] %}
+            <!-- 监听货币的操作 -->
+            <div class="btn-group">
+                <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                    通知
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="/alert_manage">通知管理</a>
+                    <a class="dropdown-item" href="/create_alert">新增通知</a>
+                </div>
+            </div>
+            {% endif %}
+
+            <button type="button" class="btn btn-info btn-home"><a href="/home">汇率主页</a></button>
         </div>
     </header>
 
-    <!--用来插入汇率显示表格-->
-    {% block content %}
 
+    {% block content %}
+    <!--用来插入 被其他主页继承 显示表格-->
     {% endblock %}
 
 
     <footer class="mastfoot mt-auto">
         <div class="inner">
-            <p>Cover template for <a href="https://getbootstrap.com/">Bootstrap</a>, by <a
-                    href="https://twitter.com/mdo">@mdo</a>.</p>
+            Our small step today will be a big step
+            <p>by <a href="https://github.com/whitefly/money_rate">author</a>
         </div>
     </footer>
 </div>

@@ -6,26 +6,30 @@
 <div class="row">
     <!-- 生成所有监控货币卡片 -->
     {% for money in alerts_data %}
-
-    <div class="col-sm-6">
+    <!-- 这里想自定义样式alert-card,但却无法显示效果 采用style强制改-->
+    <div class="col-sm-6 alert-card" style="
+    margin-bottom: 20px;
+    color: black;
+    text-align: left;
+">
         <div class="card">
             <div class="card-body">
-                <form action="alert_manage" method="post">
+                <form action="alert_update" method="post">
 
                     <!-- 更新窗口 用hint来显示原始设置价格 -->
                     <h3 class="card-title">{{money["current"]}}</h3>
 
                     <div class="form-group row">
-                        <label for="up_buy_price" class="col-sm-3 col-form-label">买入</label>
-                        <div class="col-sm-9">
+                        <label for="up_buy_price" class="col-6 col-form-label">买入</label>
+                        <div class="col-6">
                             <input type="text" class="form-control" id="up_buy_price" name="up_buy_price"
                                    placeholder="当前:¥{{money['price'][0]}}" required="required" pattern="\d+\.?\d{0,2}">
                         </div>
                     </div>
 
                     <div class="form-group row">
-                        <label for="up_sell_price" class="col-sm-3 col-form-label">卖出</label>
-                        <div class="col-sm-9">
+                        <label for="up_sell_price" class="col-6 col-form-label">卖出</label>
+                        <div class="col-6">
                             <input type="text" class="form-control" id="up_sell_price" name="up_sell_price"
                                    placeholder="当前:¥{{money['price'][1]}}" required="required" pattern="\d+\.?\d{0,2}">
                         </div>
@@ -34,8 +38,16 @@
                     <input type="hidden" name="up_current" value="{{money['current']}}">
                     <input type="hidden" name="up_rate_kind" value="{{money['rate_kind']}}">
 
-                    <button type="submit" class="btn btn-primary">更新</button>
+                    <button type="submit" class="btn btn-primary ">更新</button>
 
+                </form>
+
+                <!-- 删除操作窗口 -->
+                <form action="alert_delete" method="post">
+
+                    <input type="hidden" name="up_current" value="{{money['current']}}">
+                    <input type="hidden" name="up_rate_kind" value="{{money['rate_kind']}}">
+                    <button type="submit" class="btn btn-primary btn-update">删除</button>
 
                 </form>
             </div>
