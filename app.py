@@ -3,6 +3,8 @@ from modules.money import Money
 from modules.user import User
 from modules.database import Database
 from modules.alert import Alert
+from apscheduler.schedulers.background import BackgroundScheduler
+from modules.deliver import Deliver
 
 app = Flask(__name__)
 app.secret_key = "wuhan"
@@ -10,12 +12,15 @@ app.secret_key = "wuhan"
 
 @app.before_first_request
 def inti_request():
-    # 这东西在整个过程中,只会执行一次
-    print("执行一次")
     Database.inti()
     # 定义session['email']的功能,否则找不到会报错. 要是浏览器重启,好像也直接报错
     session['email'] = session.get('email')
     session['name'] = session.get('name')
+
+    # 周1到周5,全天,一分钟刷新一次
+    clock = BackgroundScheduler()
+    clock.add_job(Deliver.send_simple_message, 'cron', day_of_week='0-4', hour="0-23", minute="0-59")
+    clock.start()
 
 
 # 用来显示主页面

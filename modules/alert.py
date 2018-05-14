@@ -46,7 +46,7 @@ class Alert(object):
         功能:删除 某个货币监控
         """
         return Database.delete(Alert.collection_name,
-                                   query={"email": email, "current": current, "rate_kind": rate_kind})
+                               query={"email": email, "current": current, "rate_kind": rate_kind})
 
     def __get_info(self) -> json:
         # 封装为json格式进行插入

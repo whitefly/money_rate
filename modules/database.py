@@ -23,7 +23,7 @@ class Database(object):
         return Database.DATABASE[collection].find_one(query)
 
     @staticmethod
-    def find_all(collection):
+    def get_all(collection):
         return Database.DATABASE[collection].find()
 
     @staticmethod

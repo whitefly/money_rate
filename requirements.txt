@@ -1,2 +1,7 @@
 Flask==1.0.2
 passlib==1.7.1
+pymongo==3.6.1
+pandas==0.22
+beautifulsoup4==4.6.0
+APScheduler==3.5.1
+requests==2.18.4
